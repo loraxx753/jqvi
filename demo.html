@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<link rel="stylesheet" href="src/css/jqvi.css" />
+<style type="text/css">
+#prompt { 
+	width: 400px;
+	height: 200px;
+	margin: 0 auto;
+	border: 1px solid #000;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="src/js/jqvi/jqvi.js"></script>
+<script>
+$(document).ready(function() {
+	$("body").jqvi({
+		fileText : "<p>Resume</p><p>Work I've done: <p>one</p><p>two</p>",
+		filename : 'new.txt',
+		filesystem : {},
+	});
+});
+</script>
+</head>
+<body>
+
+</body>
+</html>
