@@ -253,6 +253,10 @@
 						$this.on("keypress.viInsertKeyPress", vi.insertKeyPress);
 						$this.on("keydown.viInsertKeyDown", vi.insertKeyDown);
 					}
+					else if(keyTxt == "Z")
+					{
+						inputMode(keyTxt);
+					}
 					else if(keyTxt == "o")
 					{
 						$(pointer).parent().parent().html($(pointer).parent().parent().text()).after("<p id='current_line'><span class='input'><span class='before'></span><span class='selected'></span><span class='after'></span></span></p>");
@@ -645,6 +649,13 @@
 						{
 							vi.updateFile(settings.filename, $viClone.html());
 						}
+
+						var lines = $("#viWindow p:not(.empty)").length;
+						var characters = $("#viWindow p:not(.empty)").text().length + lines;
+						var fileOpenTxt = '"'+settings.filename+'" '+lines+'L, '+characters+'C written';
+
+						$("#viInput").html(fileOpenTxt);
+
 						break;
 					}
 					case "x":
@@ -686,6 +697,33 @@
 							$("#viWindow p:not(.empty):last").attr("id", "current_line");
 						}
 						vi.redrawLine();							
+					}
+					else if(file = command.match(/^r (.*)$/))
+					{
+						tree = file[1].split("/");
+						fileName = tree.pop();
+
+						newLocation = settings.filesystem;
+						for(i in tree)
+						{
+							if(newLocation[tree[i]])
+							{
+								newLocation = newLocation[tree[i]];
+							}
+							else
+							{
+								vi.throwError("E484: Can't open file "+file[1])
+							}
+						}
+						if(newLocation._files[file[1]])
+						{
+							$("#current_line").after(newLocation._files[file[1]].contents);
+							$("#viInput").empty();
+						}
+						else
+						{
+							vi.throwError("E484: Can't open file "+file[1])
+						}
 					}
 					else
 					{
