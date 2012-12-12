@@ -224,6 +224,12 @@
 						$this.on("keypress.viInsertKeyPress", vi.insertKeyPress);
 						$this.on("keydown.viInsertKeyDown", vi.insertKeyDown);
 					}
+					else if(keyTxt == "d")
+					{
+						$this.off("keypress.viKeyPress");
+						$this.off("keydown.viKeyDown");
+						vi.optionListener(keyTxt);
+					}
 					else if(keyTxt == "i")
 					{
 						$("#viInput").removeClass("inputError").html("-- INSERT --");
@@ -574,6 +580,39 @@
 			throwError : function(errorTxt)
 			{
 				$("#viInput").addClass("inputError").html(errorTxt);
+			},
+			optionListener : function(txt) {
+				$this.on("keypress.options", function(e) {
+					var keycode = null;
+					if(window.event) {
+						keycode = window.event.keyCode;
+					}else if(e) {
+						keycode = e.which;
+					}
+					var keyChar = String.fromCharCode(keycode);
+					if(txt == "d")
+					{
+						if(keyChar == "d")
+						{
+							$("#current_line").prev().attr("id", "current_line").end().remove();
+							vi.redrawLine();
+						}
+						else if(keyChar == 'w')
+						{
+							var afterTxt = $("#current_line .after").text().match(/^[a-z0-9]+(.*)/i);
+							if(afterTxt[1][0] == " ")
+							{
+								afterTxt[1] = afterTxt[1].substr(1);
+							}
+							$("#current_line .after").text(afterTxt[1]);
+							$("#current_line .selected").text("");
+							vi.redrawLine();
+						}
+					}
+					$this.off("keypress.options");
+					$this.on("keydown.viKeyDown", vi.cmdKeyDown);
+					$this.on("keypress.viKeyPress", vi.cmdKeyPress);
+				});
 			},
 			contentPresent : function()
 			{
