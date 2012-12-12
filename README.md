@@ -46,7 +46,7 @@ $("body").jqvi({
 
 ### filesystem
 
-A javascript object that contains folder information that the file will be written to. The file will be written into the {folername}._files child object.
+A javascript object that contains folder information that the file will be written to. The file will be written into the {foldername}._files child object.
 
 If this is omitted, it will be written to an empty object.
 
