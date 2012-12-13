@@ -224,7 +224,14 @@
 						$this.on("keypress.viInsertKeyPress", vi.insertKeyPress);
 						$this.on("keydown.viInsertKeyDown", vi.insertKeyDown);
 					}
-					else if(keyTxt == "d")
+					else if(keyTxt == "J")
+					{
+						vi.pointerLocation = $("#current_line").text().length;
+						$("#current_line").text($("#current_line").text() + " " + $("#current_line").next().text());
+							$("#current_line").next().remove();
+						vi.redrawLine();
+					}
+					else if(keyTxt == "d" || keyTxt == "Z")
 					{
 						$this.off("keypress.viKeyPress");
 						$this.off("keydown.viKeyDown");
@@ -258,10 +265,6 @@
 						$this.off("keydown.viKeyDown");
 						$this.on("keypress.viInsertKeyPress", vi.insertKeyPress);
 						$this.on("keydown.viInsertKeyDown", vi.insertKeyDown);
-					}
-					else if(keyTxt == "Z")
-					{
-						inputMode(keyTxt);
 					}
 					else if(keyTxt == "o")
 					{
@@ -609,6 +612,20 @@
 							vi.redrawLine();
 						}
 					}
+					if(txt == "Z" && keyChar == "Z")
+					{
+						$("#current_line").html($("#current_line").text()).removeAttr("id");
+						$(".empty").remove();
+						if(settings.filename.match(/\.exe$/))
+						{
+							vi.updateFile(settings.filename, $("#viWindow").html(), $("#viWindow").text());
+						}
+						else
+						{
+							vi.updateFile(settings.filename, $("#viWindow").html());
+						}
+						vi.unload();
+					} 
 					$this.off("keypress.options");
 					$this.on("keydown.viKeyDown", vi.cmdKeyDown);
 					$this.on("keypress.viKeyPress", vi.cmdKeyPress);
